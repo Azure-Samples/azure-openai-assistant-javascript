@@ -1,0 +1,18 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "azure-openai-assistant-javascript": {
+      "appLocation": "src",
+      "apiLocation": "api",
+      "outputLocation": "src/dist",
+      "apiLanguage": "node",
+      "apiVersion": "18",
+      "appBuildCommand": "npm run build",
+      "apiBuildCommand": "npm run build --if-present",
+      "run": "npm run dev",
+      "appDevserverUrl": "http://localhost:5173",
+      "appName": "azure-openai-assistant-javascript",
+      "resourceGroup": "azure-openai-assistant-javascript-rg"
+    }
+  }
+}

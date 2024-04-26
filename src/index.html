@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <title>Azure OpenAI Assistant</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header><h1>Azure OpenAI / Finance Assistant</h1></header>
+    <main>
+      <section class="input__container">
+        <label class="input">
+          <textarea
+            id="userQueryRef"
+            class="input__field"
+            placeholder="Hi htere..."
+          ></textarea>
+          <span class="input__label">User message</span>
+        </label>
+        <button id="submitQueryRef">Run</button>
+      </section>
+      <p class="text__hint">
+        Your Assistant can make mistakes. Consider checking important
+        information. All financial data mentioned below is fictitious!
+      </p>
+      <section class="output__container">
+        <div id="outputRef" class="hidden"></div>
+      </section>
+    </main>
+    <script type="module" src="script.js"></script>
+  </body>
+</html>
