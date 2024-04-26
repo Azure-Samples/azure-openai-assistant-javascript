@@ -10,7 +10,29 @@
     "preview": "vite preview",
     "start": "swa start"
   },
-  "author": "Wassim Chegham <github@wassim.dev>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Azure-Samples/azure-openai-assistant-javascript.git"
+  },
+  "homepage": "https://github.com/Azure-Samples/azure-openai-assistant-javascript",
+  "bugs": {
+    "url": "https://github.com/Azure-Samples/azure-openai-assistant-javascript/issues"
+  },
+  "keywords": [
+    "ai",
+    "assistant",
+    "chatbot",
+    "agent",
+    "skills",
+    "function-calling",
+    "instructor",
+    "retrieval-augmented-generation",
+    "typescript",
+    "javascript",
+    "azure",
+    "azure-functions",
+    "azure-static-web-apps"
+  ],
   "license": "MIT",
   "devDependencies": {
     "@azure/static-web-apps-cli": "^1.1.7",
