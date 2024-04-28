@@ -10,11 +10,9 @@
 
 :star: Like and fork this sample to receive lastest changes and updates!
 
-[Overview](#overview) • [Get started](#get-started) • [Run the sample](#run-the-sample) • [Resources](#resources) • [FAQ](#faq) • [Troubleshooting](#troubleshooting)
+[Overview](#overview) • [Get started](#get-started) • [Run the sample](#run-the-sample) • [Resources](#resources)
 
-<div align="center">
   <img src="./docs/azure-openai-assistant-demo.png" alt="Screenshot showing the assistant app in action" width="640px" />
-</div>
 
 </div>
 
@@ -28,19 +26,17 @@ Azure OpenAI Assistants allows you to create AI assistants tailored to your need
   <img src="./docs/azure-openai-assistant-diagram.png" alt="Screenshot showing the assistant app high level diagram" width="640px" />
 </div>
 
-
 This application is built around two main components:
 
-- A simple HTML page with a vanilla CSS and JavaScript files, and hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview). The code is located in the `src` folder.
+- A simple HTML page with a vanilla CSS and JavaScript files, and hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview). The code is located in the [`src`](./src/) folder.
 
-- A serverless API built with [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript) and using OpenAI JavaScript SDK. The code is located in the `api` folder.
+- A serverless API built with [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript) and using OpenAI JavaScript SDK. The code is located in the [`api`](./api/) folder.
 
 ## Get started
 
 There are multiple ways to get started with this project.
 
 The quickest way is to use [GitHub Codespaces](#use-github-codespaces) that provides a preconfigured environment for you. Alternatively, you can [set up your local environment](#use-your-local-environment) following the instructions below.
-
 
 ### Use your local environment
 
@@ -79,7 +75,7 @@ You will also need to have [Docker](https://www.docker.com/products/docker-deskt
 
 First you need to provision the Azure resources needed to run the sample. Follow the instructions in the [Deploy the sample to Azure](#deploy-the-sample-to-azure) section to deploy the sample to Azure, then you'll be able to run the sample locally using the deployed Azure resources.
 
-Once your deployment is complete, you should see a `.env` file in the `api` folder. This file contains the environment variables needed to run the application using Azure resources. 
+Once your deployment is complete, you should see a `.env` file in the `api` folder. This file contains the environment variables needed to run the application using Azure resources.
 
 To run the sample, run the following command which will start the web app and the API locally:
 
@@ -123,7 +119,7 @@ The resource group and all the resources will be deleted.
 
 Here are some resources to learn more about the technologies used in this sample:
 
-- [Get started using Azure OpenAI Assistants (Preview)](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-quickstart?tabs=command-line%2Ctypescript&pivots=programming-language-javascript
+- [Get started using Azure OpenAI Assistants (Preview)](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-quickstart?tabs=command-line%2Ctypescript&pivots=programming-language-javascript)
 - [Generative AI For Beginners](https://github.com/microsoft/generative-ai-for-beginners)
 - [Azure OpenAI Service](https://learn.microsoft.com/azure/ai-services/openai/overview)
 - [Azure Cosmos DB for MongoDB vCore](https://learn.microsoft.com/azure/cosmos-db/mongodb/vcore/)
