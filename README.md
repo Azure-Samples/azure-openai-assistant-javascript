@@ -12,7 +12,9 @@
 
 [Overview](#overview) • [Get started](#get-started) • [Run the sample](#run-the-sample) • [Resources](#resources) • [FAQ](#faq) • [Troubleshooting](#troubleshooting)
 
-![Screenshot showing the assistant app in action](./docs/azure-openai-assistant-demo.png)
+<div align="center">
+  <img src="./docs/azure-openai-assistant-demo.png" alt="Screenshot showing the assistant app in action" width="640px" />
+</div>
 
 </div>
 
@@ -22,11 +24,14 @@ This sample shows how to quickly get started with [OpenAI Assistant](https://lea
 
 Azure OpenAI Assistants allows you to create AI assistants tailored to your needs through custom instructions and augmented by advanced tools like code interpreter, and custom functions. In this article, we provide an in-depth walkthrough of getting started with the Assistants API.
 
-TODO: architecure diagram
+<div align="center">
+  <img src="./docs/azure-openai-assistant-diagram.png" alt="Screenshot showing the assistant app high level diagram" width="640px" />
+</div>
 
-This application is made from multiple components:
 
-- A web app made with a single chat web component built with [Lit](https://lit.dev) and hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview). The code is located in the `src` folder.
+This application is built around two main components:
+
+- A simple HTML page with a vanilla CSS and JavaScript files, and hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview). The code is located in the `src` folder.
 
 - A serverless API built with [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript) and using OpenAI JavaScript SDK. The code is located in the `api` folder.
 
@@ -62,7 +67,7 @@ You can run this project directly in your browser by using GitHub Codespaces, wh
 
 [![Open in GitHub Codespaces](https://img.shields.io/static/v1?style=for-the-badge&label=GitHub+Codespaces&message=Open&color=blue&logo=github)](https://codespaces.new/Azure-Samples/azure-openai-assistant-javascript?hide_repo_select=true&ref&quickstart=true)
 
-### Use a VSCode dev container
+### Use a VS Code dev container
 
 A similar option to Codespaces is VS Code Dev Containers, that will open the project in your local VS Code instance using the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
 
