@@ -6,6 +6,8 @@ app.setup({ enableHttpStream: true });
 
 const OpenAI = require("openai");
 
+const assistantDefinition = require("../assistant-financial.json");
+
 const {
   ASSISTANT_ID,
   AZURE_OPENAI_API_KEY,
@@ -16,6 +18,11 @@ const {
   //   AZURE_CLIENT_ID,
   //   AZURE_TENANT_ID,
 } = process.env;
+
+console.log(`ASSISTANT_ID: ${ASSISTANT_ID}`);
+console.log(`AZURE_OPENAI_API_KEY: ${AZURE_OPENAI_API_KEY}`);
+console.log(`AZURE_OPENAI_API_VERSION: ${AZURE_OPENAI_API_VERSION}`);
+console.log(`AZURE_OPENAI_ENDPOINT: ${AZURE_OPENAI_ENDPOINT}`);
 
 // Important: Errors handlings are removed intentionally. If you are using this sample in production
 // please add proper errors handling.
@@ -43,36 +50,12 @@ async function initAzureOpenAI() {
   });
 }
 
-const assistantDefinition = {
-  name: "Finance Assistant",
-  instructions:
-    "You are a personal finance assistant. Retrieve the latest closing price of a stock using its ticker symbol.",
-  tools: [
-    {
-      type: "function",
-      function: {
-        name: "getStockPrice",
-        description:
-          "Retrieve the latest closing price of a stock using its ticker symbol.",
-        parameters: {
-          type: "object",
-          properties: {
-            symbol: {
-              type: "string",
-              description: "The ticker symbol of the stock",
-            },
-          },
-          required: ["symbol"],
-        },
-      },
-    },
-  ],
-  model: AZURE_DEPLOYMENT_NAME,
-};
+
 
 async function* processQuery(userQuery) {
   // Step 0: Connect and acquire an OpenAI instance
   const openai = await initAzureOpenAI();
+  console.log("OpenAI instance acquired");
 
   // Step 1: Retrieve or Create an Assistant
   const assistant = ASSISTANT_ID
@@ -175,6 +158,7 @@ app.http("assistant", {
   handler: async (request, context) => {
     context.log(`Http function processed request for url "${request.url}"`);
     const query = await request.text();
+    context.log(`Received query: ${query}`)
 
     return { body: processQuery(query) };
   },

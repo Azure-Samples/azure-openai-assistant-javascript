@@ -1,0 +1,8 @@
+### Send a POST request to the Azure Function with REST client extension
+
+POST http://localhost:7071/api/assistant HTTP/1.1
+content-type: application/json
+
+{
+    "symbol": "msft"
+}
