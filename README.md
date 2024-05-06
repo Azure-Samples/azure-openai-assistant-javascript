@@ -1,7 +1,7 @@
 <!-- prettier-ignore -->
 <div align="center">
 
-# Azure OpenAI Assistant Quick Start
+# Serverless Azure OpenAI Assistant Quick Start<br> Function Calling
 
 [![Open project in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-blue?style=flat-square&logo=github)](https://codespaces.new/Azure-Samples/azure-openai-assistant-javascript?hide_repo_select=true&ref=main&quickstart=true)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/Azure-Samples/azure-openai-assistant-javascript/build.yaml?style=flat-square&label=Build)](https://github.com/Azure-Samples/azure-openai-assistant-javascript/actions)
