@@ -1,0 +1,19 @@
+name: azure-openai-assistant-javascript@1.0.0
+services:
+  webapp:
+    project: ./
+    dist: dist
+    language: js
+    host: staticwebapp
+    hooks:
+      predeploy:
+        windows:
+          shell: pwsh
+          run: npm run build
+          interactive: false
+          continueOnError: false
+        posix:
+          shell: sh
+          run: npm run build
+          interactive: false
+          continueOnError: false
