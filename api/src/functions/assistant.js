@@ -4,43 +4,24 @@ dotenv.config();
 const { app } = require("@azure/functions");
 app.setup({ enableHttpStream: true });
 
-const OpenAI = require("openai");
+const { AzureOpenAI } = require("openai");
+const { DefaultAzureCredential, getBearerTokenProvider } = require("@azure/identity");
 
 const {
   ASSISTANT_ID,
-  AZURE_OPENAI_API_KEY,
-  AZURE_OPENAI_API_VERSION,
-  AZURE_OPENAI_ENDPOINT,
   AZURE_DEPLOYMENT_NAME,
-  // TODO: uncomment this when https://github.com/openai/openai-node/pull/718 is merged
-  //   AZURE_CLIENT_ID,
-  //   AZURE_TENANT_ID,
 } = process.env;
 
 // Important: Errors handlings are removed intentionally. If you are using this sample in production
-// please add proper errors handling.
+// please add proper error handling.
 
 async function initAzureOpenAI() {
-  // TODO: uncomment this when https://github.com/openai/openai-node/pull/718 is merged
-  //   console.log("Using Azure OpenAI (w/ AAD) ...");
-  //   const credential = new DefaultAzureCredential({
-  //     managedIdentityClientId: AZURE_CLIENT_ID,
-  //     tenantId: AZURE_TENANT_ID,
-  //   });
-  //   const { token } = await credential.getToken(
-  //     "https://cognitiveservices.azure.com/.default"
-  //   );
-  //   return new OpenAI({
-  //     baseURL: `${AZURE_OPENAI_ENDPOINT.replace(/\/+$/, "")}/openai`,
-  //     defaultQuery: { "api-version": AZURE_OPENAI_API_VERSION },
-  //     defaultHeaders: { Authorization: `Bearer ${token}` },
-  //   });
-  return new OpenAI({
-    apiKey: AZURE_OPENAI_API_KEY,
-    baseURL: `${AZURE_OPENAI_ENDPOINT.replace(/\/+$/, "")}/openai`,
-    defaultQuery: { "api-version": AZURE_OPENAI_API_VERSION },
-    defaultHeaders: { "api-key": AZURE_OPENAI_API_KEY },
-  });
+    console.log("Using Azure OpenAI (w/ Microsoft Entra ID) ...");
+    const credential = new DefaultAzureCredential();
+    const azureADTokenProvider = getBearerTokenProvider(credential, "https://cognitiveservices.azure.com/.default");
+    return new AzureOpenAI({
+      azureADTokenProvider,
+    });
 }
 
 const assistantDefinition = {
