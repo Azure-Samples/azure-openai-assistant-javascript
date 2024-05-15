@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "environmentName": {
+      "value": "${AZURE_ENV_NAME}"
+    },
+    "resourceGroupName": {
+      "value": "${AZURE_RESOURCE_GROUP}"
+    },
+    "location": {
+      "value": "${AZURE_LOCATION}"
+    },
+    "principalId": {
+      "value": "${AZURE_PRINCIPAL_ID}"
+    },
+    "openAiLocation": {
+      "value": "${AZURE_OPENAI_LOCATION=swedencentral}"
+    },
+    "chatModelName": {
+      "value": "${AZURE_OPENAI_API_MODEL=gpt-35-turbo}"
+    },
+    "chatModelVersion": {
+      "value": "${AZURE_OPENAI_API_MODEL_VERSION=1106}"
+    },
+    "embeddingsModelName": {
+      "value": "${AZURE_OPENAI_API_EMBEDDINGS_MODEL=text-embedding-ada-002}"
+    },
+    "embeddingsModelVersion": {
+      "value": "${AZURE_OPENAI_API_EMBEDDINGS_MODEL_VERSION=2}"
+    },
+    "webappLocation": {
+      "value": "${AZURE_WEBAPP_LOCATION=eastus2}"
+    },
+    "searchServiceSkuName": {
+      "value": "${AZURE_SEARCH_SERVICE_SKU=basic}"
+    },
+    "isContinuousDeployment": {
+      "value": "${CI=false}"
+    }
+  }
+}

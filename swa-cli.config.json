@@ -4,7 +4,7 @@
     "azure-openai-assistant-javascript": {
       "appLocation": "src",
       "apiLocation": "api",
-      "outputLocation": "src/dist",
+      "outputLocation": "/dist",
       "apiLanguage": "node",
       "apiVersion": "18",
       "appBuildCommand": "npm run build",
