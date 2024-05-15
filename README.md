@@ -23,7 +23,7 @@ This sample shows how to quickly get started with [OpenAI Assistant](https://lea
 Azure OpenAI Assistants allows you to create AI assistants tailored to your needs through custom instructions and augmented by advanced tools like code interpreter, and custom functions. In this article, we provide an in-depth walkthrough of getting started with the Assistants API.
 
 <div align="center">
-  <img src="./docs/\architecture-diagram-assistant-javascript.png" alt="Screenshot showing the assistant app high level diagram" width="640px" />
+  <img src="./docs/architecture-diagram-assistant-javascript.png" alt="Screenshot showing the assistant app high level diagram" width="640px" />
 </div>
 
 This application is built around two main components:
