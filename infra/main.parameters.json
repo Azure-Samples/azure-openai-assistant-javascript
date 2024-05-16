@@ -17,6 +17,9 @@
     "openAiLocation": {
       "value": "${AZURE_OPENAI_LOCATION=swedencentral}"
     },
+    "openAiApiVersion": {
+      "value": "${AZURE_OPENAI_API_VERSION=2024-02-15-preview}"
+    },
     "webappLocation": {
       "value": "${AZURE_WEBAPP_LOCATION=eastus2}"
     },
@@ -24,7 +27,7 @@
       "value": "${CI=false}"
     },
     "assistantId": {
-      "value": "${ASSISTANT_ID=?}"
+      "value": "${ASSISTANT_ID}"
     },
     "azureDeploymentName": {
       "value": "${AZURE_DEPLOYMENT_NAME=gpt-35-turbo}"
