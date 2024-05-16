@@ -3,7 +3,7 @@
   "configurations": {
     "azure-openai-assistant-javascript": {
       "appLocation": "src",
-      "apiLocation": "",
+      "apiLocation": "api",
       "outputLocation": "dist",
       "apiLanguage": "node",
       "apiVersion": "18",
