@@ -107,8 +107,7 @@ async function* handleRequiresAction(openai, run, runId, threadId, context) {
             return {
               tool_call_id: toolCall.id,
               output: await getStockPrice(
-                JSON.parse(toolCall.function.arguments).symbol,
-                context
+                JSON.parse(toolCall.function.arguments).symbol
               ),
             };
           }
@@ -120,7 +119,7 @@ async function* handleRequiresAction(openai, run, runId, threadId, context) {
     // Submit all the tool outputs at the same time
     yield* submitToolOutputs(openai, toolOutputs, runId, threadId, context);
   } catch (error) {
-    context.log.error("Error processing required action:", error);
+    context.error("Error processing required action:", error);
   }
 }
 
@@ -147,12 +146,11 @@ async function* submitToolOutputs(openai, toolOutputs, runId, threadId, context)
       // else if ... handle the other events as needed
     }
   } catch (error) {
-    context.log.error("Error submitting tool outputs:", error);
+    context.error("Error submitting tool outputs:", error);
   }
 }
 
-async function getStockPrice(symbol, context) {
-  context.log("Fetching fake closing stock value for symbol:", { symbol });
+async function getStockPrice(symbol) {
   return Promise.resolve("" + Math.random(10) * 1000); // simulate network request
 }
 
