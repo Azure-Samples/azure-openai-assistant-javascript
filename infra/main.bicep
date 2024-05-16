@@ -24,7 +24,7 @@ var assistantGpt = {
   modelName: 'gpt-35-turbo'
   deploymentName: 'gpt-35-turbo'
   deploymentVersion: '1106'
-  deploymentCapacity: 120
+  deploymentCapacity: 10
 }
 
 param openAiLocation string // Set in main.parameters.json
