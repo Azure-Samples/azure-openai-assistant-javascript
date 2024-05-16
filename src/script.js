@@ -1,5 +1,8 @@
 async function submitQuery(userQuery) {
-  const response = await fetch("/api/assistant", {
+
+  const { API_URL = 'http://localhost:7071' } = import.meta.env;
+
+  const response = await fetch(`${API_URL}/api/assistant`, {
     method: "POST",
     body: userQuery,
   });

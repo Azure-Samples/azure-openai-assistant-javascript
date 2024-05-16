@@ -3,5 +3,5 @@ export default {
   build: {
     outDir: '../dist'
   },
-  envPrefix: ["ASSISTANT_ID", "AZURE_", "OPENAI_"],
+  envPrefix: ["ASSISTANT_ID", "AZURE_", "OPENAI_", "API_URL"],
 };
