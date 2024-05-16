@@ -1,16 +1,18 @@
-const { Readable } = require("node:stream");
-const dotenv = require("dotenv");
-dotenv.config();
+require("dotenv/config");
 
+const { Readable } = require("node:stream");
 const { app } = require("@azure/functions");
 app.setup({ enableHttpStream: true });
 
 const { AzureOpenAI } = require("openai");
 const { DefaultAzureCredential, getBearerTokenProvider } = require("@azure/identity");
 
+const mailer = require("./mailer");
+
 const {
   ASSISTANT_ID,
   AZURE_DEPLOYMENT_NAME,
+  EMAIL_RECEIVER
 } = process.env;
 
 // Important: Errors handlings are removed intentionally. If you are using this sample in production
@@ -28,7 +30,7 @@ async function initAzureOpenAI(context) {
 const assistantDefinition = {
   name: "Finance Assistant",
   instructions:
-    "You are a personal finance assistant. Retrieve the latest closing price of a stock using its ticker symbol.",
+    "You are a personal finance assistant. Retrieve the latest closing price of a stock using its ticker symbol. You also know how to generate a full body email in both plain text and html.",
   tools: [
     {
       type: "function",
@@ -48,6 +50,32 @@ const assistantDefinition = {
         },
       },
     },
+    {
+      type: "function",
+      function: {
+        name: "writeAndSendEmail",
+        description:
+          "Provides an email subject, and body content in plain text, and the same body in html",
+        parameters: {
+          type: "object",
+          properties: {
+            subject: {
+              type: "string",
+              description: "The subject of the email. Limit to maximum 50 characters",
+            },
+            text: {
+              type: "string",
+              description: "The body text of the email in plain text",
+            },
+            html: {
+              type: "string",
+              description: "The body text of the email in html",
+            },
+          },
+          required: ["subject", "text", "html"],
+        },
+      },
+    }
   ],
   model: AZURE_DEPLOYMENT_NAME,
 };
@@ -98,7 +126,7 @@ async function* processQuery(userQuery, context) {
 }
 
 async function* handleRequiresAction(openai, run, runId, threadId, context) {
-  context.log('Handle Function Calling');
+  context.log('Handle Function Calling', {required_action: run.required_action.submit_tool_outputs.tool_calls});
   try {
     const toolOutputs = await Promise.all(
       run.required_action.submit_tool_outputs.tool_calls.map(
@@ -108,6 +136,16 @@ async function* handleRequiresAction(openai, run, runId, threadId, context) {
               tool_call_id: toolCall.id,
               output: await getStockPrice(
                 JSON.parse(toolCall.function.arguments).symbol
+              ),
+            };
+          } else if (toolCall.function.name === "writeAndSendEmail") {
+            const args = JSON.parse(toolCall.function.arguments);
+            return {
+              tool_call_id: toolCall.id,
+              output: await writeAndSendEmail(
+                args.subject,
+                args.text,
+                args.html
               ),
             };
           }
@@ -150,8 +188,18 @@ async function* submitToolOutputs(openai, toolOutputs, runId, threadId, context)
   }
 }
 
+// Functions Callings
+
 async function getStockPrice(symbol) {
   return Promise.resolve("" + Math.random(10) * 1000); // simulate network request
+}
+
+async function writeAndSendEmail(subject, text, html) {
+  const info = await mailer.sendEmail({
+    to: EMAIL_RECEIVER, subject, text, html
+  });
+
+  return info.messageId;
 }
 
 // API definition

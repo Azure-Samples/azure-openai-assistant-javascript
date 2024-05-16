@@ -2,7 +2,7 @@
   "name": "azure-openai-assistant-javascript-api",
   "version": "1.0.0",
   "description": "The API for a personal finance assistant designed to help you with financial tasks and queries.",
-  "main": "src/functions/*.js",
+  "main": "src/functions/assistant.js",
   "scripts": {
     "start": "func start --cors \"*\"",
     "test": "echo \"No tests yet...\""
@@ -11,6 +11,7 @@
     "@azure/functions": "^4.0.0",
     "@azure/identity": "^4.2.0",
     "dotenv": "^16.4.5",
+    "nodemailer": "^6.9.13",
     "openai": "^4.45.0"
   },
   "devDependencies": {
