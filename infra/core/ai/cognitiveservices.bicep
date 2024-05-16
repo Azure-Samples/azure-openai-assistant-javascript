@@ -27,6 +27,9 @@ resource account 'Microsoft.CognitiveServices/accounts@2023-05-01' = {
   location: location
   tags: tags
   kind: kind
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     customSubDomainName: customSubDomainName
     publicNetworkAccess: publicNetworkAccess
@@ -53,3 +56,4 @@ resource deployment 'Microsoft.CognitiveServices/accounts/deployments@2023-05-01
 output endpoint string = account.properties.endpoint
 output id string = account.id
 output name string = account.name
+output identityPrincipalId string = account.identity.principalId

@@ -1,8 +1,8 @@
 name: azure-openai-assistant-javascript@1.0.0
 services:
   webapp:
-    project: ./
-    dist: dist
+    project: ./src
+    dist: ../dist
     language: js
     host: staticwebapp
     hooks:
@@ -17,3 +17,12 @@ services:
           run: npm run build
           interactive: false
           continueOnError: false
+    #   postdeploy:
+    #     shell: sh
+    #     run: azd env get-values > .env && npx swa deploy --deployment-token ${DEPLOYMENT_TOKEN} && npm install --only=dev --prefix api
+    #     interactive: false
+    #     continueOnError: false
+  api:
+    project: ./api
+    language: js
+    host: function

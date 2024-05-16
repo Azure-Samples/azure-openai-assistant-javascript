@@ -11,43 +11,30 @@ param location string
 
 param resourceGroupName string = ''
 param webappName string = 'webapp'
+param apiServiceName string = 'api'
+param appServicePlanName string = ''
 param storageAccountName string = ''
-var abbrs = loadJsonContent('abbreviations.json')
-var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
-var tags = { 'azd-env-name': environmentName }
+param blobContainerName string = 'files'
 param webappLocation string // Set in main.parameters.json
 
-param searchServiceName string = ''
+// Azure OpenAI -- Cognitive Services
+param assistantId string // Set in main.parameters.json
 
-// OpenAI Cognitive Services
-param chatModelName string // Set in main.parameters.json
-param chatDeploymentName string = chatModelName
-param chatModelVersion string // Set in main.parameters.json
-param chatDeploymentCapacity int = 30
-param embeddingsModelName string // Set in main.parameters.json
-param embeddingsModelVersion string // Set in main.parameters.json
-param embeddingsDeploymentName string = embeddingsModelName
-param embeddingsDeploymentCapacity int = 30
-
-var finalOpenAiUrl = empty(openAiUrl) ? 'https://${openAi.outputs.name}.openai.azure.com' : openAiUrl
-var storageUrl = 'https://${storage.outputs.name}.blob.${environment().suffixes.storage}'
-var searchUrl = 'https://${search.outputs.name}.search.windows.net'
-
-// The free tier does not support managed identity (required) or semantic search (optional)
-@allowed(['basic', 'standard', 'standard2', 'standard3', 'storage_optimized_l1', 'storage_optimized_l2'])
-param searchServiceSkuName string
+var assistantGpt = {
+  modelName: 'gpt-35-turbo'
+  deploymentName: 'gpt-35-turbo'
+  deploymentVersion: '1106'
+  deploymentCapacity: 120
+}
 
 param openAiLocation string // Set in main.parameters.json
 param openAiSkuName string = 'S0'
 param openAiUrl string = ''
 
-param blobContainerName string = 'files'
-
-// Id of the user or app to assign application roles
-param principalId string = ''
-
-// Set automated deployment flag
-param isContinuousDeployment bool // Set in main.parameters.json
+var finalOpenAiUrl = empty(openAiUrl) ? 'https://${openAi.outputs.name}.openai.azure.com' : openAiUrl
+var abbrs = loadJsonContent('abbreviations.json')
+var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
+var tags = { 'azd-env-name': environmentName }
 
 // Organize resources in a resource group
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
@@ -58,30 +45,55 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 // The application frontend webapp
 module webapp './core/host/staticwebapp.bicep' = {
-  name: 'webapp'
+  dependsOn: [api]
+  name: '${abbrs.webStaticSites}web-${resourceToken}'
   scope: resourceGroup
   params: {
     name: !empty(webappName) ? webappName : '${abbrs.webStaticSites}web-${resourceToken}'
     location: webappLocation
     tags: union(tags, { 'azd-service-name': webappName })
+    rg: resourceGroup.name
   }
 }
 
-module search 'core/search/search-services.bicep' = {
-  name: 'search'
+// The application backend API
+module api './core/host/functions.bicep' = {
+  name: 'api'
   scope: resourceGroup
   params: {
-    name: !empty(searchServiceName) ? searchServiceName : '${abbrs.searchSearchServices}${resourceToken}'
+    name: '${abbrs.webSitesFunctions}api-${resourceToken}'
+    location: location
+    tags: union(tags, { 'azd-service-name': apiServiceName })
+    alwaysOn: false
+    runtimeName: 'node'
+    runtimeVersion: '20'
+    appServicePlanId: appServicePlan.outputs.id
+    storageAccountName: storage.outputs.name
+    managedIdentity: true
+    appSettings: {
+      AZURE_OPENAI_API_ENDPOINT: finalOpenAiUrl
+      AZURE_OPENAI_API_DEPLOYMENT_NAME: assistantGpt.deploymentName
+     }
+  }
+  dependsOn: empty(openAiUrl) ? [] : [openAi]
+}
+
+// Compute plan for the Azure Functions API
+module appServicePlan './core/host/appserviceplan.bicep' = {
+  name: 'appserviceplan'
+  scope: resourceGroup
+  params: {
+    name: !empty(appServicePlanName) ? appServicePlanName : '${abbrs.webServerFarms}${resourceToken}'
     location: location
     tags: tags
-    disableLocalAuth: true
-    authOptions: null
     sku: {
-      name: searchServiceSkuName
+      name: 'Y1'
+      tier: 'Dynamic'
     }
   }
 }
-// Storage for Azure Functions API and Blob storage
+
+// Storage for Azure Functions API
 module storage './core/storage/storage-account.bicep' = {
   name: 'storage'
   scope: resourceGroup
@@ -112,50 +124,54 @@ module openAi 'core/ai/cognitiveservices.bicep' = if (empty(openAiUrl)) {
     disableLocalAuth: true
     deployments: [
       {
-        name: chatDeploymentName
+        name: assistantGpt.deploymentName
         model: {
           format: 'OpenAI'
-          name: chatModelName
-          version: chatModelVersion
+          name: assistantGpt.modelName
+          version: assistantGpt.deploymentVersion
         }
         sku: {
           name: 'Standard'
-          capacity: chatDeploymentCapacity
+          capacity: assistantGpt.deploymentCapacity
         }
-      }
-      {
-        name: embeddingsDeploymentName
-        model: {
-          format: 'OpenAI'
-          name: embeddingsModelName
-          version: embeddingsModelVersion
-        }
-        capacity: embeddingsDeploymentCapacity
       }
     ]
   }
 }
 
-// User roles
-module openAiRoleUser 'core/security/role.bicep' = if (!isContinuousDeployment) {
+// Roles
+
+// System roles
+module openAiRoleApi 'core/security/role.bicep' = {
   scope: resourceGroup
-  name: 'openai-role-user'
+  name: 'openai-role-api'
   params: {
-    principalId: principalId
+    principalId: api.outputs.identityPrincipalId
     // Cognitive Services OpenAI User
     roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
-    principalType: 'User'
+    principalType: 'ServicePrincipal'
   }
 }
 
-module storageRoleUser 'core/security/role.bicep' = if (!isContinuousDeployment) {
+module storageRoleApi 'core/security/role.bicep' = {
   scope: resourceGroup
-  name: 'storage-contrib-role-user'
+  name: 'storage-role-api'
   params: {
-    principalId: principalId
+    principalId: api.outputs.identityPrincipalId
     // Storage Blob Data Contributor
     roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-    principalType: 'User'
+    principalType: 'ServicePrincipal'
+  }
+}
+
+module openAiRoleOpenAi 'core/security/role.bicep' = {
+  scope: resourceGroup
+  name: 'openai-role-openAi'
+  params: {
+    principalId: openAi.outputs.identityPrincipalId
+    // Cognitive Services OpenAI User
+    roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    principalType: 'ServicePrincipal'
   }
 }
 
@@ -163,15 +179,9 @@ output AZURE_LOCATION string = location
 output AZURE_TENANT_ID string = tenant().tenantId
 output AZURE_RESOURCE_GROUP string = resourceGroup.name
 
-output AZURE_OPENAI_API_ENDPOINT string = finalOpenAiUrl
-output AZURE_OPENAI_API_DEPLOYMENT_NAME string = chatDeploymentName
-output AZURE_OPENAI_API_MODEL string = chatModelName
-output AZURE_OPENAI_API_MODEL_VERSION string = chatModelVersion
-output AZURE_OPENAI_API_EMBEDDINGS_DEPLOYMENT_NAME string = embeddingsDeploymentName
-output AZURE_OPENAI_API_EMBEDDINGS_MODEL string = embeddingsModelName
-output AZURE_OPENAI_API_EMBEDDINGS_MODEL_VERSION string = embeddingsModelVersion
-output AZURE_STORAGE_URL string = storageUrl
-output AZURE_STORAGE_CONTAINER_NAME string = blobContainerName
-output AZURE_AISEARCH_ENDPOINT string = searchUrl
+output AZURE_OPENAI_ENDPOINT string = finalOpenAiUrl
+output AZURE_DEPLOYMENT_NAME string = assistantGpt.deploymentName
+output ASSISTANT_ID string = assistantId
 
 output WEBAPP_URL string = webapp.outputs.uri
+output DEPLOYMENT_TOKEN string = webapp.outputs.DEPLOYMENT_TOKEN
