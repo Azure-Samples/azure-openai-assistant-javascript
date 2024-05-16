@@ -7,7 +7,7 @@ const cancelQueryRef = document.querySelector("#cancelQueryRef");
 const submitQueryRef = document.querySelector("#submitQueryRef");
 
 userQueryRef.value =
-  "Based on the latest financial and current stock market value, can you generate a brief summary that provides insights into the current state of Microsoft? Retrieve the latest closing price of a stock using its ticker symbol.";
+  "Based on the latest financial data and current stock market trends, can you provide a detailed analysis of Microsoft's current state? Please include insights into their recent performance, market position, and future outlook. Additionally, retrieve and include the latest closing price of Microsoft's stock using its ticker symbol (MSFT).";
 
 cancelQueryRef.addEventListener("click", () => {
   aborter.abort();

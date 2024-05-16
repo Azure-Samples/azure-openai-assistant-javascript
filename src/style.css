@@ -126,12 +126,12 @@ button {
 .input__container {
   display: flex;
   position: relative;
-  margin-top: 40px;
 }
 
 .output__container {
   min-height: 300px;
   position: relative;
+  margin-top: 40px;
 }
 
 .hidden {
