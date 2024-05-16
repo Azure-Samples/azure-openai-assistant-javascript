@@ -18,7 +18,7 @@ param blobContainerName string = 'files'
 param webappLocation string // Set in main.parameters.json
 
 // Azure OpenAI -- Cognitive Services
-param assistantId string // Set in main.parameters.json
+param assistantId string = '' // Set in main.parameters.json
 
 var assistantGpt = {
   modelName: 'gpt-35-turbo'
@@ -30,6 +30,9 @@ var assistantGpt = {
 param openAiLocation string // Set in main.parameters.json
 param openAiSkuName string = 'S0'
 param openAiUrl string = ''
+param openAiApiVersion string // Set in main.parameters.json
+
+param principalId string // Set in main.parameters.json
 
 var finalOpenAiUrl = empty(openAiUrl) ? 'https://${openAi.outputs.name}.openai.azure.com' : openAiUrl
 var abbrs = loadJsonContent('abbreviations.json')
@@ -45,7 +48,6 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
 
 // The application frontend webapp
 module webapp './core/host/staticwebapp.bicep' = {
-  dependsOn: [api]
   name: '${abbrs.webStaticSites}web-${resourceToken}'
   scope: resourceGroup
   params: {
@@ -64,6 +66,7 @@ module api './core/host/functions.bicep' = {
     name: '${abbrs.webSitesFunctions}api-${resourceToken}'
     location: location
     tags: union(tags, { 'azd-service-name': apiServiceName })
+    allowedOrigins: [webapp.outputs.uri]
     alwaysOn: false
     runtimeName: 'node'
     runtimeVersion: '20'
@@ -71,8 +74,9 @@ module api './core/host/functions.bicep' = {
     storageAccountName: storage.outputs.name
     managedIdentity: true
     appSettings: {
-      AZURE_OPENAI_API_ENDPOINT: finalOpenAiUrl
-      AZURE_OPENAI_API_DEPLOYMENT_NAME: assistantGpt.deploymentName
+      AZURE_OPENAI_ENDPOINT: finalOpenAiUrl
+      AZURE_DEPLOYMENT_NAME: assistantGpt.deploymentName
+      OPENAI_API_VERSION: openAiApiVersion
      }
   }
   dependsOn: empty(openAiUrl) ? [] : [openAi]
@@ -141,36 +145,26 @@ module openAi 'core/ai/cognitiveservices.bicep' = if (empty(openAiUrl)) {
 
 // Roles
 
+// User roles
+module openAiRoleUser 'core/security/role.bicep' = {
+  scope: resourceGroup
+  name: 'openai-role-user'
+  params: {
+    principalId: principalId
+    // Cognitive Services OpenAI Contributor
+    roleDefinitionId: 'a001fd3d-188f-4b5d-821b-7da978bf7442'
+    principalType: 'User'
+  }
+}
+
 // System roles
 module openAiRoleApi 'core/security/role.bicep' = {
   scope: resourceGroup
   name: 'openai-role-api'
   params: {
     principalId: api.outputs.identityPrincipalId
-    // Cognitive Services OpenAI User
-    roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module storageRoleApi 'core/security/role.bicep' = {
-  scope: resourceGroup
-  name: 'storage-role-api'
-  params: {
-    principalId: api.outputs.identityPrincipalId
-    // Storage Blob Data Contributor
-    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module openAiRoleOpenAi 'core/security/role.bicep' = {
-  scope: resourceGroup
-  name: 'openai-role-openAi'
-  params: {
-    principalId: openAi.outputs.identityPrincipalId
-    // Cognitive Services OpenAI User
-    roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    // Cognitive Services OpenAI Contributor
+    roleDefinitionId: 'a001fd3d-188f-4b5d-821b-7da978bf7442'
     principalType: 'ServicePrincipal'
   }
 }
@@ -182,6 +176,8 @@ output AZURE_RESOURCE_GROUP string = resourceGroup.name
 output AZURE_OPENAI_ENDPOINT string = finalOpenAiUrl
 output AZURE_DEPLOYMENT_NAME string = assistantGpt.deploymentName
 output ASSISTANT_ID string = assistantId
+output OPENAI_API_VERSION string = openAiApiVersion
 
 output WEBAPP_URL string = webapp.outputs.uri
-output DEPLOYMENT_TOKEN string = webapp.outputs.DEPLOYMENT_TOKEN
+output API_URL string = api.outputs.uri
+

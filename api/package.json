@@ -4,7 +4,7 @@
   "description": "The API for a personal finance assistant designed to help you with financial tasks and queries.",
   "main": "src/functions/*.js",
   "scripts": {
-    "start": "func start",
+    "start": "func start --cors \"*\"",
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
