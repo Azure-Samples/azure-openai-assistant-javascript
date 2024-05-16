@@ -31,6 +31,8 @@ param openAiLocation string // Set in main.parameters.json
 param openAiSkuName string = 'S0'
 param openAiUrl string = ''
 
+param principalId string // Set in main.parameters.json
+
 var finalOpenAiUrl = empty(openAiUrl) ? 'https://${openAi.outputs.name}.openai.azure.com' : openAiUrl
 var abbrs = loadJsonContent('abbreviations.json')
 var resourceToken = toLower(uniqueString(subscription().id, environmentName, location))
@@ -141,34 +143,24 @@ module openAi 'core/ai/cognitiveservices.bicep' = if (empty(openAiUrl)) {
 
 // Roles
 
+// User roles
+module openAiRoleUser 'core/security/role.bicep' = {
+  scope: resourceGroup
+  name: 'openai-role-user'
+  params: {
+    principalId: principalId
+    // Cognitive Services OpenAI User
+    roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
+    principalType: 'User'
+  }
+}
+
 // System roles
 module openAiRoleApi 'core/security/role.bicep' = {
   scope: resourceGroup
   name: 'openai-role-api'
   params: {
     principalId: api.outputs.identityPrincipalId
-    // Cognitive Services OpenAI User
-    roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module storageRoleApi 'core/security/role.bicep' = {
-  scope: resourceGroup
-  name: 'storage-role-api'
-  params: {
-    principalId: api.outputs.identityPrincipalId
-    // Storage Blob Data Contributor
-    roleDefinitionId: 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
-    principalType: 'ServicePrincipal'
-  }
-}
-
-module openAiRoleOpenAi 'core/security/role.bicep' = {
-  scope: resourceGroup
-  name: 'openai-role-openAi'
-  params: {
-    principalId: openAi.outputs.identityPrincipalId
     // Cognitive Services OpenAI User
     roleDefinitionId: '5e0bd9bd-7b93-4f28-af87-19fc36ad61bd'
     principalType: 'ServicePrincipal'
