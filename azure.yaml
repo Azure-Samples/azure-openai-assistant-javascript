@@ -26,3 +26,12 @@ services:
     project: ./api
     language: js
     host: function
+
+hooks:
+  postprovision:
+    windows:
+      shell: pwsh
+      run: azd env get-values > api/.env
+    posix:
+      shell: sh
+      run: azd env get-values > api/.env
