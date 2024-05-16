@@ -77,6 +77,18 @@ First you need to provision the Azure resources needed to run the sample. Follow
 
 Once your deployment is complete, you should see a `.env` file in the `api` folder. This file contains the environment variables needed to run the application using Azure resources.
 
+Also, in order for the Assistant to send emails, you need to provide the following env variables in the `./api/.env` file:
+
+```
+EMAIL_RECEIVER="your email address"
+EMAIL_SENDER_NAME="Azure OpenAI Assistant"
+EMAIL_SENDER_USERNAME="sender email address"
+# Generate an application password from the MFA mobile application
+EMAIL_SENDER_APP_PASSWORD="foobar" 
+```
+
+**Important: Please follow [this guide](https://support.microsoft.com/en-us/account-billing/manage-app-passwords-for-two-step-verification-d6dc8c6d-4bf7-4851-ad95-6d07799387e9) to generate an Application Password if you are using MFA.**
+
 To run the sample, run the following command which will start the web app and the API locally:
 
 ```bash
