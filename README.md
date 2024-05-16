@@ -94,12 +94,6 @@ Note that the documents are uploaded automatically when deploying the sample to 
 - **Azure account**. If you're new to Azure, [get an Azure account for free](https://azure.microsoft.com/free) to get free Azure credits to get started. If you're a student, you can also get free credits with [Azure for Students](https://aka.ms/azureforstudents).
 - **Azure subscription with access enabled for the Azure OpenAI service**. You can request access with [this form](https://aka.ms/oaiapply).
 
-### Setup and configure Microsoft Entra ID
-
-This sample is using Microsoft Entra ID for authentication. To set up Microsoft Entra ID, follow these steps:
-
-TODO
-
 #### Deploy the sample
 
 1. Open a terminal and navigate to the root of the project.

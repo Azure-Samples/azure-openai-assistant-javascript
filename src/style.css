@@ -11,19 +11,20 @@ body {
   height: 100%;
   overflow: hidden;
 }
+
 body {
   margin: 0;
   font-family: "Open Sans", "Helvetica Neue", sans-serif;
-  background: linear-gradient(30deg, #edeef170 40%, #e3b7cf85 80%);
+  background: linear-gradient(30deg, #ffc8e685 40%, #d7f0ff70 80%);
 }
 
 header {
-  background: #cce4fb;
   padding: 4px 10px;
 }
 
 header h1 {
-  font-size: 1.4rem;
+  font-size: 2rem;
+  text-align: center;
 }
 
 header a {
@@ -45,18 +46,21 @@ main {
   display: block;
   position: relative;
   width: 550px;
-  height: 100px;
+  height: 200px;
   border-radius: 6px 0 0 6px;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
   overflow: hidden;
 }
+
 .input--error {
   border: 3px #cf4135 solid;
 }
+
 .input--success {
   border: 3px #15bc74 solid;
 }
+
 .input__field {
   width: 100%;
   height: 100%;
@@ -69,6 +73,7 @@ main {
   font-weight: 400;
   resize: none;
 }
+
 .input__label {
   position: absolute;
   left: 20px;
@@ -81,16 +86,20 @@ main {
   font-weight: 300;
   transition: 0.3s;
 }
+
 .input__field:not(:-moz-placeholder-shown) {
   padding-top: 10px;
 }
+
 .input__field:not(:-ms-input-placeholder) {
   padding-top: 10px;
 }
+
 .input__field:not(:placeholder-shown) {
   padding-top: 10px;
 }
-.input__field:not(:placeholder-shown) ~ .input__label {
+
+.input__field:not(:placeholder-shown)~.input__label {
   opacity: 1;
   top: -10px;
   font-size: 0.875rem;
@@ -98,38 +107,153 @@ main {
 
 button {
   border: 1px solid transparent;
-  border-radius: 0 6px 6px 0;
-  background: rgb(164 125 147);
-  color: wheat;
+  border-radius: 4px;
+  background: rgb(81 135 255);
+  color: white;
   cursor: pointer;
   padding: 0 20px;
-  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
-    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  position: absolute;
+  right: 30px;
+  bottom: 10px;
+  width: 100px;
+  height: 30px;
+}
+
+#cancelQueryRef {
+  background: rgb(255, 81, 81);
 }
 
 .input__container {
   display: flex;
+  position: relative;
+  margin-top: 40px;
 }
 
 .output__container {
   min-height: 300px;
+  position: relative;
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-.output__container > div {
+#outputRef {
   width: 70vw;
   border: 1px solid #b7b7b7;
   padding: 30px 50px;
   background: white;
   border-radius: 6px;
   max-height: 500px;
-  overflow-y: scroll;
 }
 
 .text__hint {
   font-size: 11px;
   color: gray;
+}
+
+.loader__container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.spinner {
+  --strokeWidth: 3px;
+  display: block;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  flex-shrink: 0;
+  mask-image: radial-gradient(closest-side, transparent calc(100% - var(--strokeWidth) - 1px), white calc(100% - var(--strokeWidth)) calc(100% - 1px), transparent 100%);
+  background-color: #b4d6fa;
+  color: #5288ff;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-name: spin;
+}
+
+.spinner__tail {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  mask-image: conic-gradient(transparent 105deg, white 105deg);
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.33, 0, 0.67, 1);
+  animation-name: spin-tail;
+}
+
+.spinner__tail:before,
+.spinner__tail:after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  animation: inherit;
+  background-image: conic-gradient(currentcolor 135deg, transparent 135deg);
+}
+
+.spinner__tail:before {
+  animation-name: spin-before;
+}
+
+.spinner__tail:after {
+  animation-name: spin-after;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-tail {
+  0% {
+    transform: rotate(-135deg);
+  }
+
+  50% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(225deg);
+  }
+}
+
+@keyframes spin-before {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(105deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes spin-after {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  50% {
+    transform: rotate(225deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
 }
