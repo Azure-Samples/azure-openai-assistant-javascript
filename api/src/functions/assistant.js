@@ -1,3 +1,4 @@
+const { Readable } = require("node:stream");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -84,7 +85,7 @@ async function* processQuery(userQuery) {
 
       if (delta) {
         const content = delta.content[0]?.text?.value || "";
-        yield Buffer.from(content);
+        yield content;
       }
     } else if (event === "thread.run.requires_action") {
       yield* handleRequiresAction(openai, data, data.id, data.thread_id);
@@ -133,7 +134,7 @@ async function* submitToolOutputs(openai, toolOutputs, runId, threadId) {
 
         if (delta) {
           const content = delta.content[0]?.text?.value || "";
-          yield Buffer.from(content);
+          yield content;
         }
       }
       // else if ... handle the other events as needed
@@ -157,6 +158,6 @@ app.http("assistant", {
     context.log(`Http function processed request for url "${request.url}"`);
     const query = await request.text();
 
-    return { body: processQuery(query) };
+    return { body: Readable.from(processQuery(query)) };
   },
 });
