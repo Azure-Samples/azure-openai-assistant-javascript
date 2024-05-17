@@ -21,12 +21,11 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-exports.sendEmail = async function ({ to, subject, text, html }) {
+exports.sendEmail = async function ({ to, subject, html }) {
   const info = await transporter.sendMail({
     from: `"${EMAIL_SENDER_NAME}" <${EMAIL_SENDER_USERNAME}>`,
     to,
     subject,
-    text,
     html,
   });
 

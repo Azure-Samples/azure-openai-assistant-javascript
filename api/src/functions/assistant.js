@@ -30,7 +30,8 @@ const assistantDefinition = {
   name: "Finance Assistant",
   instructions:
     "You are a personal finance assistant. Retrieve the latest closing price of a stock using its ticker symbol. "
-    + "You also know how to generate a full body email in both plain text and html. Only use the functions you have been provideded with",
+    + "You also know how to generate a full body email formatted as rich html. Do not use other format than rich html."
+    + "Only use the functions you have been provideded with",
   tools: [
     {
       type: "function",
@@ -63,16 +64,12 @@ const assistantDefinition = {
               type: "string",
               description: "The subject of the email. Limit to maximum 50 characters",
             },
-            text: {
-              type: "string",
-              description: "The body text of the email in plain text",
-            },
             html: {
               type: "string",
               description: "The body text of the email in html",
             },
           },
-          required: ["subject", "text", "html"],
+          required: ["subject", "html"],
         },
       },
     }
@@ -164,7 +161,6 @@ async function* handleRequiresAction(openai, run, runId, threadId) {
               tool_call_id: toolCall.id,
               output: await writeAndSendEmail(
                 args.subject,
-                args.text,
                 args.html
               ),
             };
@@ -216,9 +212,9 @@ async function getStockPrice(symbol) {
   return Promise.resolve("" + Math.random(10) * 1000); // simulate network request
 }
 
-async function writeAndSendEmail(subject, text, html) {
+async function writeAndSendEmail(subject, html) {
   const info = await mailer.sendEmail({
-    to: EMAIL_RECEIVER, subject, text, html
+    to: EMAIL_RECEIVER, subject, html
   });
 
   return info.messageId;
