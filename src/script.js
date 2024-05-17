@@ -1,4 +1,5 @@
 let aborter = new AbortController();
+let autoAbortTimeout = null;
 
 const outputRef = document.querySelector("#outputRef");
 const loadingRef = document.querySelector("#loadingRef");
@@ -27,47 +28,63 @@ submitQueryRef
       cancelQueryRef.classList.remove("hidden");
       submitQueryRef.classList.add("hidden");
 
-      const stream = await submitQuery(value);
-      loadingRef.classList.add("hidden");
-
-      outputRef.innerHTML = "";
-      outputRef.classList.remove("hidden");
-
-      for await (const chunk of stream) {
-        if (aborter.signal.aborted) throw signal.reason;
-        insertText(chunk)();
-      }
-
-      cancelQueryRef.classList.add("hidden");
-      submitQueryRef.classList.remove("hidden");
-      loadingRef.classList.add("hidden");
-
-      if (outputRef.innerHTML === "") {
-        outputRef.innerHTML = "Your Assistant could not fetch data. Please try again!"
-      }
+      autoTimeout();
+      submitQuery(value, insertText);
     }
   });
 
-const insertText = chunk => () => {
+function autoTimeout() {
+  autoAbortTimeout = setTimeout(() => {
+    cancelQueryRef.click();
+
+    if (outputRef.innerHTML === "") {
+      outputRef.innerHTML = "Your Assistant could not fetch data. Please try again!"
+    }
+
+  }, 30_000); // in case, cancel request after 30 of timeout
+
+}
+
+function insertText(chunk) {
   const delta = new TextDecoder().decode(chunk);
   outputRef.innerHTML += delta;
   outputRef.scrollTop = outputRef.scrollHeight; // scroll to bottom
 };
 
 
-async function submitQuery(userQuery) {
+function submitQuery(userQuery, cb) {
 
   const { API_URL = 'http://localhost:7071' } = import.meta.env;
 
-  const response = await fetch(`${API_URL}/api/assistant`, {
+  fetch(`${API_URL}/api/assistant`, {
     method: "POST",
     body: userQuery,
     signal: aborter.signal
-  });
+  }).then(response => response.body)
+    .then(rs => processReadableStream(rs, cb));
+}
 
-  if (!response.ok) {
-    console.log(response.statusText);
-  }
+function processReadableStream(rs, cb) {
 
-  return response.body;
+  rs.pipeTo(new WritableStream({
+    write(chunk, controller) {
+      cb(chunk);
+    },
+    start(controller) {
+      outputRef.innerHTML = "";
+      loadingRef.classList.add("hidden");
+      outputRef.classList.remove("hidden");
+      clearTimeout(autoAbortTimeout); // cancel 
+    },
+    close(controller) {
+      cancelQueryRef.classList.add("hidden");
+      submitQueryRef.classList.remove("hidden");
+      loadingRef.classList.add("hidden");
+    },
+    abort(reason) {
+      console.log(reason);
+    },
+  })).catch(console.error);
+
+  return rs;
 }
