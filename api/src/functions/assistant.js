@@ -7,7 +7,7 @@ app.setup({ enableHttpStream: true });
 const { AzureOpenAI } = require("openai");
 const { DefaultAzureCredential, getBearerTokenProvider } = require("@azure/identity");
 
-const mailer = require("./mailer");
+const mailer = require("./acs");
 
 const {
   ASSISTANT_ID,
@@ -19,7 +19,7 @@ const {
 // please add proper error handling.
 
 async function initAzureOpenAI(context) {
-  context.log("Using Azure OpenAI (w/ Microsoft Entra ID) ...");
+  console.log("Using Azure OpenAI (w/ Microsoft Entra ID) ...");
   const credential = new DefaultAzureCredential();
   const azureADTokenProvider = getBearerTokenProvider(credential, "https://cognitiveservices.azure.com/.default");
   return new AzureOpenAI({
@@ -81,30 +81,30 @@ const assistantDefinition = {
 };
 
 async function* processQuery(userQuery, context) {
-  context.log('Step 0: Connect and acquire an OpenAI instance');
+  console.log('Step 0: Connect and acquire an OpenAI instance');
   const openai = await initAzureOpenAI(context);
 
-  context.log('Step 1: Retrieve or Create an Assistant');
+  console.log('Step 1: Retrieve or Create an Assistant');
   const assistant = ASSISTANT_ID
     ? await openai.beta.assistants.retrieve(ASSISTANT_ID)
     : await openai.beta.assistants.create(assistantDefinition);
 
-  context.log('Step 2: Create a Thread');
+  console.log('Step 2: Create a Thread');
   const thread = await openai.beta.threads.create();
 
-  context.log('Step 3: Add a Message to the Thread');
+  console.log('Step 3: Add a Message to the Thread');
   const message = await openai.beta.threads.messages.create(thread.id, {
     role: "user",
     content: userQuery,
   });
 
-  context.log('Step 4: Create a Run (and stream the response)');
+  console.log('Step 4: Create a Run (and stream the response)');
   const run = openai.beta.threads.runs.stream(thread.id, {
     assistant_id: assistant.id,
     stream: true,
   });
 
-  context.log('Step 5: Read streamed response', { run });
+  console.log('Step 5: Read streamed response', { run });
   for await (const chunk of run) {
     const { event, data } = chunk;
 
@@ -114,7 +114,7 @@ async function* processQuery(userQuery, context) {
       if (delta) {
         const value = delta.content[0]?.text?.value || "";
         yield value;
-        context.log('Processed thread.message.delta', { value });
+        console.log('Processed thread.message.delta', { value });
       }
     } else if (event === "thread.run.requires_action") {
       yield* handleRequiresAction(openai, data, data.id, data.thread_id, context);
@@ -122,11 +122,11 @@ async function* processQuery(userQuery, context) {
     // else if ... handle the other events as needed
   }
 
-  context.log('Done!');
+  console.log('Done!');
 }
 
 async function* handleRequiresAction(openai, run, runId, threadId, context) {
-  context.log('Handle Function Calling', {required_action: run.required_action.submit_tool_outputs.tool_calls});
+  console.log('Handle Function Calling', {required_action: run.required_action.submit_tool_outputs.tool_calls});
   try {
     const toolOutputs = await Promise.all(
       run.required_action.submit_tool_outputs.tool_calls.map(
@@ -164,7 +164,7 @@ async function* handleRequiresAction(openai, run, runId, threadId, context) {
 async function* submitToolOutputs(openai, toolOutputs, runId, threadId, context) {
   try {
     // Use the submitToolOutputsStream helper
-    context.log('Call Tool output and stream the response');
+    console.log('Call Tool output and stream the response');
     const asyncStream = openai.beta.threads.runs.submitToolOutputsStream(
       threadId,
       runId,
@@ -178,7 +178,7 @@ async function* submitToolOutputs(openai, toolOutputs, runId, threadId, context)
         if (delta) {
           const value = delta.content[0]?.text?.value || "";
           yield value;
-          context.log('Processed thread.message.delta (tool output)', { value });
+          console.log('Processed thread.message.delta (tool output)', { value });
         }
       }
       // else if ... handle the other events as needed
@@ -198,8 +198,7 @@ async function writeAndSendEmail(subject, text, html) {
   const info = await mailer.sendEmail({
     to: EMAIL_RECEIVER, subject, text, html
   });
-
-  return info.messageId;
+  console.log({info})
 }
 
 // API definition
@@ -208,7 +207,7 @@ app.http("assistant", {
   methods: ["POST"],
   authLevel: "anonymous",
   handler: async (request, context) => {
-    context.log(`Http function processed request for url "${request.url}"`);
+    console.log(`Http function processed request for url "${request.url}"`);
     const query = await request.text();
 
     return {
