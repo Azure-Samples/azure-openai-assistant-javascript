@@ -16,7 +16,7 @@ app.http("assistant", {
       headers: {
         'Content-Type': 'text/plain',
         "Transfer-Encoding": "chunked"
-      }, body: Readable.from(processQueryGenerator(query, context))
+      }, body: Readable.from(processQueryGenerator(query))
     };
   },
 });
