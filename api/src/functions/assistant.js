@@ -102,6 +102,7 @@ async function* processQuery(userQuery, context) {
   const run = openai.beta.threads.runs.stream(thread.id, {
     assistant_id: assistant.id,
     stream: true,
+    tool_choice: { "type": "function", "function": { "name": "getStockPrice" } }
   });
 
   context.log('Step 5: Read streamed response', { run });
@@ -126,7 +127,7 @@ async function* processQuery(userQuery, context) {
 }
 
 async function* handleRequiresAction(openai, run, runId, threadId, context) {
-  context.log('Handle Function Calling', {required_action: run.required_action.submit_tool_outputs.tool_calls});
+  context.log('Handle Function Calling', { required_action: run.required_action.submit_tool_outputs.tool_calls });
   try {
     const toolOutputs = await Promise.all(
       run.required_action.submit_tool_outputs.tool_calls.map(
