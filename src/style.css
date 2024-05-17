@@ -145,6 +145,7 @@ button {
   background: white;
   border-radius: 6px;
   max-height: 500px;
+  overflow-y: auto;
 }
 
 .text__hint {
