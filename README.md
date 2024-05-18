@@ -16,7 +16,7 @@
 
 </div>
 
-This sample shows how to quickly get started with [OpenAI Assistant](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/assistant) on Azure. The application is hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview) and [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript). You can use it as a starting point for building more complex Assistant and Agent applications.
+This sample shows how to quickly get started with [OpenAI Assistant](https://learn.microsoft.com/azure/ai-services/openai/how-to/assistant) on Azure. The application is hosted on [Azure Static Web Apps](https://learn.microsoft.com/azure/static-web-apps/overview) and [Azure Functions](https://learn.microsoft.com/azure/azure-functions/functions-overview?pivots=programming-language-javascript). You can use it as a starting point for building more complex Assistant and Agent applications.
 
 ## Overview
 
@@ -87,11 +87,12 @@ EMAIL_SENDER_USERNAME="sender email address"
 EMAIL_SENDER_APP_PASSWORD="foobar" 
 ```
 
-**Important: Please follow [this guide](https://support.microsoft.com/en-us/account-billing/manage-app-passwords-for-two-step-verification-d6dc8c6d-4bf7-4851-ad95-6d07799387e9) to generate an Application Password if you are using MFA.**
+**Important: Please follow [this guide](https://support.microsoft.com/account-billing/manage-app-passwords-for-two-step-verification-d6dc8c6d-4bf7-4851-ad95-6d07799387e9) to generate an Application Password if you are using MFA.**
 
 To run the sample, run the following command which will start the web app and the API locally:
 
 ```bash
+npm install
 npm start
 ```
 
@@ -112,7 +113,7 @@ Note that the documents are uploaded automatically when deploying the sample to 
 2. Authenticate with Azure by running `azd auth login`.
 3. Run `azd up` to deploy the application to Azure. This will provision Azure resources, deploy this sample.
    - You will be prompted to select a base location for the resources.
-   - By default, the OpenAI resource will be deployed to `swedencentral`. You can set a different location with `azd env set AZURE_OPENAI_RESOURCE_GROUP_LOCATION <location>`. Currently only a short list of locations is accepted. **Azure OpenAI Assistants are currently available in Sweden Central, East US 2, and Australia East. For more information about model availability in those regions, [see the models guide](https://learn.microsoft.com/en-us/azure/ai-services/openai/concepts/models).**
+   - By default, the OpenAI resource will be deployed to `swedencentral`. You can set a different location with `azd env set AZURE_OPENAI_RESOURCE_GROUP_LOCATION <location>`. Currently only a short list of locations is accepted. **Azure OpenAI Assistants are currently available in Sweden Central, East US 2, and Australia East. For more information about model availability in those regions, [see the models guide](https://learn.microsoft.com/azure/ai-services/openai/concepts/models).**
 
 The deployment process will take a few minutes. Once it's done, you'll see the URL of the web app in the terminal.
 
@@ -131,7 +132,7 @@ The resource group and all the resources will be deleted.
 
 Here are some resources to learn more about the technologies used in this sample:
 
-- [Get started using Azure OpenAI Assistants (Preview)](https://learn.microsoft.com/en-us/azure/ai-services/openai/assistants-quickstart?tabs=command-line%2Ctypescript&pivots=programming-language-javascript)
+- [Get started using Azure OpenAI Assistants (Preview)](https://learn.microsoft.com/azure/ai-services/openai/assistants-quickstart?tabs=command-line%2Ctypescript&pivots=programming-language-javascript)
 - [Generative AI For Beginners](https://github.com/microsoft/generative-ai-for-beginners)
 - [Azure OpenAI Service](https://learn.microsoft.com/azure/ai-services/openai/overview)
 - [Azure Cosmos DB for MongoDB vCore](https://learn.microsoft.com/azure/cosmos-db/mongodb/vcore/)
@@ -162,6 +163,6 @@ contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additio
 
 This project may contain trademarks or logos for projects, products, or services. Authorized use of Microsoft
 trademarks or logos is subject to and must follow
-[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/en-us/legal/intellectualproperty/trademarks/usage/general).
+[Microsoft's Trademark & Brand Guidelines](https://www.microsoft.com/legal/intellectualproperty/trademarks/usage/general).
 Use of Microsoft trademarks or logos in modified versions of this project must not cause confusion or imply Microsoft sponsorship.
 Any use of third-party trademarks or logos are subject to those third-party's policies.
