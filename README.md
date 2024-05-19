@@ -89,16 +89,23 @@ EMAIL_SENDER_APP_PASSWORD="foobar"
 
 **Important: Please follow [this guide](https://support.microsoft.com/account-billing/manage-app-passwords-for-two-step-verification-d6dc8c6d-4bf7-4851-ad95-6d07799387e9) to generate an Application Password if you are using MFA.**
 
-To run the sample, run the following command which will start the web app and the API locally:
+To run the sample, run the following commands, which will start the web app, and the API locally.
+
+1. Open a terminal and navigate to the root of the project, then run the API server first:
+
+```bash
+npm install --prefix api
+npm start --prefix api
+```
+
+2. Open another terminal and navigate to the root of the project, then run the webapp server:
 
 ```bash
 npm install
 npm start
 ```
 
-Open the URL `http://localhost:4280` in your browser to start chatting with the Assistant.
-
-Note that the documents are uploaded automatically when deploying the sample to Azure with `azd up`.
+Open the URL `http://localhost:4280` in your browser to interact with the Assistant.
 
 ### Deploy the sample to Azure
 

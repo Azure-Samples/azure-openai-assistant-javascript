@@ -3,7 +3,7 @@
   "configurations": {
     "azure-openai-assistant-javascript": {
       "appLocation": "src",
-      "apiLocation": "api",
+      "apiLocation": "",
       "outputLocation": "dist",
       "apiLanguage": "node",
       "apiVersion": "18",
@@ -11,6 +11,7 @@
       "apiBuildCommand": "npm run build --if-present",
       "run": "npm run dev",
       "appDevserverUrl": "http://localhost:5173",
+      "apiDevserverUrl": "http://localhost:7071",
       "env": "default",
       "appName": "webapp"
     }
