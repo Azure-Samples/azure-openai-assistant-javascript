@@ -31,6 +31,9 @@
     },
     "azureDeploymentName": {
       "value": "${AZURE_DEPLOYMENT_NAME=gpt-35-turbo}"
+    },
+    "OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL": {
+      "value": "${OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL=true}"
     }
   }
 }

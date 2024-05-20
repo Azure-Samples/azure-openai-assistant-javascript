@@ -11,7 +11,8 @@ const mailer = require("./mailer");
 const {
   ASSISTANT_ID,
   AZURE_DEPLOYMENT_NAME,
-  EMAIL_RECEIVER
+  EMAIL_RECEIVER,
+  OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL
 } = process.env;
 
 // Important: Errors handlings are removed intentionally. If you are using this sample in production
@@ -213,6 +214,11 @@ async function getStockPrice(symbol) {
 }
 
 async function writeAndSendEmail(subject, html) {
+if (OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL === 'true') {
+    console.log('Dry mode emabled. Skip sending emails');
+    return 'Fake email sent!!';
+  }
+
   const info = await mailer.sendEmail({
     to: EMAIL_RECEIVER, subject, html
   });

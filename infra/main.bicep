@@ -27,6 +27,7 @@ var assistantGpt = {
   deploymentCapacity: 10
 }
 
+param OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL string = 'true' // Set in main.parameters.json
 param openAiLocation string // Set in main.parameters.json
 param openAiSkuName string = 'S0'
 param openAiUrl string = ''
@@ -77,6 +78,7 @@ module api './core/host/functions.bicep' = {
       AZURE_OPENAI_ENDPOINT: finalOpenAiUrl
       AZURE_DEPLOYMENT_NAME: assistantGpt.deploymentName
       OPENAI_API_VERSION: openAiApiVersion
+      OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL: OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL
      }
   }
   dependsOn: empty(openAiUrl) ? [] : [openAi]
