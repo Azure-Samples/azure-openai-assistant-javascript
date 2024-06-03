@@ -13,8 +13,6 @@ param resourceGroupName string = ''
 param webappName string = 'webapp'
 param apiServiceName string = 'api'
 param appServicePlanName string = ''
-param storageAccountName string = ''
-param blobContainerName string = 'files'
 param webappLocation string // Set in main.parameters.json
 
 // Azure OpenAI -- Cognitive Services
@@ -72,7 +70,6 @@ module api './core/host/functions.bicep' = {
     runtimeName: 'node'
     runtimeVersion: '20'
     appServicePlanId: appServicePlan.outputs.id
-    storageAccountName: storage.outputs.name
     managedIdentity: true
     appSettings: {
       AZURE_OPENAI_ENDPOINT: finalOpenAiUrl
@@ -96,24 +93,6 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
       name: 'Y1'
       tier: 'Dynamic'
     }
-  }
-}
-
-// Storage for Azure Functions API
-module storage './core/storage/storage-account.bicep' = {
-  name: 'storage'
-  scope: resourceGroup
-  params: {
-    name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
-    location: location
-    tags: tags
-    allowBlobPublicAccess: false
-    containers: [
-      {
-        name: blobContainerName
-        publicAccess: 'None'
-      }
-    ]
   }
 }
 
