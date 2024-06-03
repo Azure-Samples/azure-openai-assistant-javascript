@@ -27,8 +27,8 @@ var assistantGpt = {
 
 param OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL string = 'true' // Set in main.parameters.json
 param openAiLocation string // Set in main.parameters.json
-param openAiSkuName string = 'S0'
-param openAiUrl string = ''
+param openAiSkuName string = 'S0' // Set in main.parameters.json
+param openAiUrl string = '' // Set in main.parameters.json
 param openAiApiVersion string // Set in main.parameters.json
 
 param principalId string // Set in main.parameters.json
