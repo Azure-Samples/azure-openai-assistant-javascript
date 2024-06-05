@@ -13,11 +13,6 @@ services:
         posix:
           shell: sh
           run: export API_URL && npm run build
-    #   postdeploy:
-    #     shell: sh
-    #     run: azd env get-values > .env && npx swa deploy --deployment-token ${DEPLOYMENT_TOKEN} && npm install --only=dev --prefix api
-    #     interactive: false
-    #     continueOnError: false
   api:
     project: ./api
     language: js

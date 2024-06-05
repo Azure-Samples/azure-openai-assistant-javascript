@@ -2,7 +2,7 @@
   "name": "azure-openai-assistant-javascript-api",
   "version": "1.0.0",
   "description": "The API for a personal finance assistant designed to help you with financial tasks and queries.",
-  "main": "src/functions/assistant.js",
+  "main": "src/functions/*.js",
   "scripts": {
     "start": "func start --cors \"*\" --verbose",
     "test": "echo \"No tests yet...\""

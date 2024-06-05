@@ -13,6 +13,7 @@ param resourceGroupName string = ''
 param webappName string = 'webapp'
 param apiServiceName string = 'api'
 param appServicePlanName string = ''
+param storageAccountName string = ''
 param webappLocation string // Set in main.parameters.json
 
 // Azure OpenAI -- Cognitive Services
@@ -96,6 +97,18 @@ module appServicePlan './core/host/appserviceplan.bicep' = {
   }
 }
 
+module storage './core/storage/storage-account.bicep' = {
+  name: 'storage'
+  scope: resourceGroup
+  params: {
+    name: !empty(storageAccountName) ? storageAccountName : '${abbrs.storageStorageAccounts}${resourceToken}'
+    location: location
+    tags: tags
+    allowBlobPublicAccess: false
+    containers: []
+  }
+}
+
 module openAi 'core/ai/cognitiveservices.bicep' = if (empty(openAiUrl)) {
   name: 'openai'
   scope: resourceGroup
@@ -162,3 +175,4 @@ output OPENAI_API_VERSION string = openAiApiVersion
 output WEBAPP_URL string = webapp.outputs.uri
 output API_URL string = api.outputs.uri
 
+output OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL string = OPENAI_FUNCTION_CALLING_SKIP_SEND_EMAIL
