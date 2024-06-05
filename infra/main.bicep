@@ -19,6 +19,8 @@ param webappLocation string // Set in main.parameters.json
 // Azure OpenAI -- Cognitive Services
 param assistantId string = '' // Set in main.parameters.json
 
+param blobContainerName string = 'files'
+
 var assistantGpt = {
   modelName: 'gpt-35-turbo'
   deploymentName: 'gpt-35-turbo'
@@ -71,6 +73,7 @@ module api './core/host/functions.bicep' = {
     runtimeName: 'node'
     runtimeVersion: '20'
     appServicePlanId: appServicePlan.outputs.id
+    storageAccountName: storage.outputs.name
     managedIdentity: true
     appSettings: {
       AZURE_OPENAI_ENDPOINT: finalOpenAiUrl
@@ -105,7 +108,12 @@ module storage './core/storage/storage-account.bicep' = {
     location: location
     tags: tags
     allowBlobPublicAccess: false
-    containers: []
+    containers: [
+      {
+        name: blobContainerName
+        publicAccess: 'None'
+      }
+    ]
   }
 }
 
