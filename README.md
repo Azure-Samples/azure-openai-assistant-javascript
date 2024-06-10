@@ -132,7 +132,7 @@ Open the URL `http://localhost:4280` in your browser to interact with the Assist
 #### Azure prerequisites
 
 - **Azure account**. If you're new to Azure, [get an Azure account for free](https://azure.microsoft.com/free) to get free Azure credits to get started. If you're a student, you can also get free credits with [Azure for Students](https://aka.ms/azureforstudents).
-- **Azure subscription with access enabled for the Azure OpenAI service**. You can request access with [this form](https://aka.ms/oaiapply).
+- **Azure subscription with access enabled for the Azure OpenAI Service**. You can request access with [this form](https://aka.ms/oaiapply).
 
 #### Deploy the sample
 
