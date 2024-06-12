@@ -404,3 +404,4 @@ FodyWeavers.xsd
 # Misc
 .env*
 dist
+.DS_Store
