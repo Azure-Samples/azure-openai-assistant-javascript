@@ -9,8 +9,6 @@
 
 :star: Like and fork this sample to receive lastest changes and updates!
 
-[Overview](#overview) • [Get started](#get-started) • [Run the sample](#run-the-sample) • [Resources](#resources)
-
 [![Overview](https://img.shields.io/badge/Getting%20Started-blue?style=flat-square)](#overview)
 [![Get started](https://img.shields.io/badge/Get%20Started-blue?style=flat-square)](#get-started)
 [![Run the sample](https://img.shields.io/badge/Run%20the%20Sample-blue?style=flat-square)](#run-the-sample)
@@ -18,7 +16,7 @@
 [![Resources](https://img.shields.io/badge/Resources-blue?style=flat-square)](#resources)
 [![Contributing](https://img.shields.io/badge/Contributing-blue?style=flat-square)](#contributing)
 [![Troubleshooting](https://img.shields.io/badge/Troubleshooting-blue?style=flat-square)](#troubleshooting)
-
+[![Give us a star](https://img.shields.io/badge/⭐%20Give%20us%20a%20star-blue?style=flat-square)](https://github.com/Azure-Samples/azure-openai-assistant-javascript/stargazers)
   <img src="./docs/azure-openai-assistant-demo.png" alt="Screenshot showing the assistant app in action" width="640px" />
 
 </div>
