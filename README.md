@@ -3,13 +3,21 @@
 # Serverless Azure OpenAI Assistant Quick Start<br> Function Calling
 
 [![Open project in GitHub Codespaces](https://img.shields.io/badge/Codespaces-Open-blue?style=flat-square&logo=github)](https://codespaces.new/Azure-Samples/azure-openai-assistant-javascript?hide_repo_select=true&ref=main&quickstart=true)
-[![Build Status](https://img.shields.io/github/actions/workflow/status/Azure-Samples/azure-openai-assistant-javascript/build.yaml?style=flat-square&label=Build)](https://github.com/Azure-Samples/azure-openai-assistant-javascript/actions)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/Azure-Samples/azure-openai-assistant-javascript/build-test.yaml?style=flat-square&label=Build)](https://github.com/Azure-Samples/azure-openai-assistant-javascript/actions)
 ![Node version](https://img.shields.io/badge/Node.js->=20-3c873a?style=flat-square)
-[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-pink?style=flat-square)](LICENSE)
 
 :star: Like and fork this sample to receive lastest changes and updates!
 
 [Overview](#overview) • [Get started](#get-started) • [Run the sample](#run-the-sample) • [Resources](#resources)
+
+[![Overview](https://img.shields.io/badge/Getting%20Started-blue?style=flat-square)](#overview)
+[![Get started](https://img.shields.io/badge/Get%20Started-blue?style=flat-square)](#get-started)
+[![Run the sample](https://img.shields.io/badge/Run%20the%20Sample-blue?style=flat-square)](#run-the-sample)
+[![Deploy the sample to Azure](https://img.shields.io/badge/Deploy%20to%20Azure-blue?style=flat-square)](#deploy-the-sample-to-azure)
+[![Resources](https://img.shields.io/badge/Resources-blue?style=flat-square)](#resources)
+[![Contributing](https://img.shields.io/badge/Contributing-blue?style=flat-square)](#contributing)
+[![Troubleshooting](https://img.shields.io/badge/Troubleshooting-blue?style=flat-square)](#troubleshooting)
 
   <img src="./docs/azure-openai-assistant-demo.png" alt="Screenshot showing the assistant app in action" width="640px" />
 
