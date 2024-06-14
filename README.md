@@ -119,6 +119,8 @@ A related option is VS Code Dev Containers, which will open the project in your 
      npm install
      npm start
     ```
+Open the URL `http://localhost:4280` in your browser to interact with the Assistant.
+
 8. Configure a CI/CD pipeline:
 
     ```shell
