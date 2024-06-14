@@ -11,14 +11,17 @@ Azure OpenAI Assistants allows you to create AI assistants tailored to your need
 
 (Like and fork this sample to receive lastest changes and updates)
 
-[![Overview](https://img.shields.io/badge/Getting%20Started-blue?style=flat-square)](#overview)
-[![Get started](https://img.shields.io/badge/Get%20Started-blue?style=flat-square)](#get-started)
-[![Run the sample](https://img.shields.io/badge/Run%20the%20Sample-blue?style=flat-square)](#run-the-sample)
-[![Deploy the sample to Azure](https://img.shields.io/badge/Deploy%20to%20Azure-blue?style=flat-square)](#deploy-the-sample-to-azure)
-[![Resources](https://img.shields.io/badge/Resources-blue?style=flat-square)](#resources)
-[![Contributing](https://img.shields.io/badge/Contributing-blue?style=flat-square)](#contributing)
-[![Troubleshooting](https://img.shields.io/badge/Troubleshooting-blue?style=flat-square)](#troubleshooting)
+[![Features](https://img.shields.io/badge/🚀%20Features-blue?style=flat-square)](#features)
+[![Architecture Diagram](https://img.shields.io/badge/🏗️%20Architecture%20Diagram-blue?style=flat-square)](#architecture-diagram)
+[![Getting Started](https://img.shields.io/badge/🚦%20Getting%20Started-blue?style=flat-square)](#getting-started)
+[![Guidance](https://img.shields.io/badge/📚%20Guidance-blue?style=flat-square)](#guidance)
+[![Resources](https://img.shields.io/badge/📚%20Resources-blue?style=flat-square)](#resources)
+[![Troubleshooting](https://img.shields.io/badge/🛠️%20Troubleshooting-blue?style=flat-square)](#troubleshooting)
+[![Contributing](https://img.shields.io/badge/🤝%20Contributing-blue?style=flat-square)](#contributing)
+[![Trademarks](https://img.shields.io/badge/™%20Trademarks-blue?style=flat-square)](#trademarks)
+[![License](https://img.shields.io/badge/📜%20License-blue?style=flat-square)](LICENSE)
 [![Give us a star](https://img.shields.io/badge/⭐%20Give%20us%20a%20star-blue?style=flat-square)](https://github.com/Azure-Samples/azure-openai-assistant-javascript/stargazers)
+
   <img src="./docs/azure-openai-assistant-demo.png" alt="Screenshot showing the assistant app in action" width="640px" />
 
 </div>
@@ -219,7 +222,7 @@ This template uses `gpt-35-turbo` version `1106` which may not be available in a
 ### Costs
 
 Pricing varies per region and usage, so it isn't possible to predict exact costs for your usage.
-However, you can use the [Azure pricing calculator](https://azure.com/e/bf51ef20b57a4da08e47511938ad5415) for the resources below to get an estimate.
+However, you can use the [Azure pricing calculator](https://azure.com/e/b77c269231ab4675a88497e8aa154b08) for the resources below to get an estimate.
 
 - Azure Container Apps: Consumption plan, Free for the first 2M executions. Pricing per execution and memory used. [Pricing](https://azure.microsoft.com/en-us/pricing/details/container-apps/)
 - Azure OpenAI: Standard tier, GPT and Ada models. Pricing per 1K tokens used, and at least 1K tokens are used per question. [Pricing](https://azure.microsoft.com/pricing/details/cognitive-services/openai-service/)
