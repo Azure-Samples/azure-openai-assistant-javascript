@@ -1,4 +1,6 @@
 name: azure-openai-assistant-javascript@1.0.0
+metadata:
+  template: azure-openai-assistant-javascript
 services:
   webapp:
     project: ./src
