@@ -35,6 +35,8 @@ param openAiUrl string = '' // Set in main.parameters.json
 param openAiApiVersion string // Set in main.parameters.json
 
 param principalId string // Set in main.parameters.json
+@description('Flag to decide where to create OpenAI role for current user')
+param createRoleForUser bool = true
 
 var finalOpenAiUrl = empty(openAiUrl) ? 'https://${openAi.outputs.name}.openai.azure.com' : openAiUrl
 var abbrs = loadJsonContent('abbreviations.json')
@@ -148,7 +150,7 @@ module openAi 'core/ai/cognitiveservices.bicep' = if (empty(openAiUrl)) {
 // Roles
 
 // User roles
-module openAiRoleUser 'core/security/role.bicep' = {
+module openAiRoleUser 'core/security/role.bicep' = if (createRoleForUser) {
   scope: resourceGroup
   name: 'openai-role-user'
   params: {
