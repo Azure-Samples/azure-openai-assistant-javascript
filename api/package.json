@@ -11,7 +11,7 @@
     "@azure/functions": "^4.0.0",
     "@azure/identity": "^4.2.0",
     "dotenv": "^16.4.5",
-    "nodemailer": "^6.9.13",
+    "nodemailer": "^9.1.1",
     "openai": "^4.45.0"
   },
   "devDependencies": {
