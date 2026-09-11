@@ -8,7 +8,7 @@
     "test": "echo \"No tests yet...\""
   },
   "dependencies": {
-    "@azure/functions": "^4.0.0",
+    "@azure/functions": "^4.16.2",
     "@azure/identity": "^4.2.0",
     "dotenv": "^16.4.5",
     "nodemailer": "^6.9.13",
